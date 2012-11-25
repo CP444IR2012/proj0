@@ -70,7 +70,7 @@ public class Search {
 	        System.out.println();
 	        
 			//listTree();
-	        //search.listTree();
+	        search.listTree();
             
             // get search key
     		String input2 = in.nextLine();
@@ -82,10 +82,12 @@ public class Search {
 	            String term =st.nextToken(); 
 				//-----------------------------------------------------
 	            // TODO: Retrieve from B+tree given the input 2 key
-	            if (search.searchTree(term)){
-	            	System.out.println("Term: "+term +" is found");
+	            String key = search.searchTree(term);
+	            //System.out.println(key);
+	            if (key.isEmpty()){
+	            	System.out.println("Term: not found");
 	            }else{
-	            	System.out.println("Term: "+term +" is not found");
+	            	System.out.println("Term: "+key +" is found");
 	            }
 	        }   
             in.close();
@@ -126,26 +128,30 @@ public class Search {
         }
 	}
 	
-	private boolean searchTree(String key) throws IOException{
-		boolean found = false;
+	//Note Fix return type to String instead boolean
+	private String searchTree(String key) throws IOException{
+		 String result = null;
 		 browser = tree.browse(key);
          while ( browser.getNext( tuple ) ) {
              String key1 = (String) tuple.getKey();
              if ( key1.matches(key)) {
-            	found = true;
-                //System.out.println("Found");
+            	//print 
+            	result = key1;
+                System.out.println(key1+" Found");
+                break;
              } else {
                 //System.out.println("Not Found");
+            	result = "";
              }
          }
-		return found;
+		return result;
 	}
 	/* 
 	 * ProjectO
 	 * GROUP3: 306, 308, 905
 	 */
 	
-	/*private void listTree() throws IOException{
+	private void listTree() throws IOException{
         // show list of index key & value
         System.out.println();
         System.out.println( "Key                   Value       " );
@@ -169,6 +175,6 @@ public class Search {
             buf.append( ' ' );
         }
         return buf.toString();
-    }*/
+    }
 
 }
